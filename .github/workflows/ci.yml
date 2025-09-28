@@ -9,32 +9,30 @@ jobs:
   build-test-push:
     runs-on: ubuntu-latest
     steps:
-      - name: chechout code
+      - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: set up python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: install dependencies
+      - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Run tests
         run: PYTHONPATH=. pytest
 
-      - name: log in to ghcr
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
         
-      - name: build docker image
-        run: |
-          IMAGE_NAME=ghcr.io/mosakr1/math-api:latest
-          docker build -t $IMAGE_NAME .
-      - name: push docker image
-        run: |
-          IMAGE_NAME=ghcr.io/mosakr1/math-api:latest
-          docker push $IMAGE_NAME
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/mosakr1/math-api:latest
