@@ -32,9 +32,9 @@ jobs:
         
       - name: build docker image
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository }}/math-api:latest
+          IMAGE_NAME=ghcr.io/mosakr1/math-api:latest
           docker build -t $IMAGE_NAME .
       - name: push docker image
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository }}/math-api:latest
+          IMAGE_NAME=ghcr.io/mosakr1/math-api:latest
           docker push $IMAGE_NAME
